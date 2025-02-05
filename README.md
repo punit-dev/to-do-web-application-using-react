@@ -14,8 +14,8 @@ This project is a simple To-Do application built using React and Vite. You can a
 1. Clone the repository:
 
    ```sh
-   git clone https://github.com/your-username/your-repo.git
-   cd your-repo
+   git clone https://github.com/punit-dev/To-do-Web-Application-using-React.git
+   cd To-do-Web-Application-using-React
    ```
 
 2. Install the required packages:
