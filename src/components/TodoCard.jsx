@@ -12,9 +12,6 @@ const TodoCard = ({
   setIdx,
   idx,
 }) => {
-  const sliceDesc = (desc, len) => {
-    return desc.length > len ? desc.substring(0, len) + "..." : desc;
-  };
   return (
     <motion.div
       initial={{ scale: 0 }}
@@ -29,7 +26,7 @@ const TodoCard = ({
     >
       <h1 className="text-xl font-semibold mt-2 text-center">{title}</h1>
       <div className="p-2">
-        <p>{sliceDesc(desc, 100)}</p>
+        <p>{desc}</p>
       </div>
       <div className="flex gap-2 h-20 w-full justify-center items-center">
         <motion.button
