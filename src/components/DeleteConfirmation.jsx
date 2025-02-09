@@ -37,4 +37,4 @@ const DeleteConfirmation = ({ isDelete, setIsDelete, idx, deletetodo }) => {
   );
 };
 
-export default DeleteConfirmation;
+export default React.memo(DeleteConfirmation);

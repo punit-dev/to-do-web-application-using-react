@@ -36,7 +36,7 @@ const AddToDoForm = ({ isAddToDo, setIsAddToDo }) => {
       <motion.div
         whileTap={{ scaleX: 0.9, scaleY: 1.2 }}
         onClick={() => {
-          setIsAddToDo(false);
+          setIsAddToDo((prev) => !prev);
         }}
         className="absolute text-white top-3 left-3 px-4 cursor-pointer border-2 border-white rounded-xl"
       >
@@ -75,7 +75,12 @@ const AddToDoForm = ({ isAddToDo, setIsAddToDo }) => {
                 if (textCount < 85) {
                   setTextCount(textCount + 1);
                 }
-              } else if (keyCode.includes(key.code)) {
+              }
+            }}
+            onSelect={(e) => {
+              if (e.currentTarget.value == 0) {
+                setTextCount(85);
+              } else if (keyCode.includes(e.nativeEvent.code)) {
                 if (textCount > 0) {
                   setTextCount(textCount - 1);
                 }
@@ -94,7 +99,8 @@ const AddToDoForm = ({ isAddToDo, setIsAddToDo }) => {
           whileTap={{ scaleX: 1.1 }}
           onClick={() => {
             if (title.length !== 0 && desc.length !== 0) {
-              setIsAddToDo(false);
+              setIsAddToDo((prev) => !prev);
+              setTextCount(85);
             }
           }}
           className="bg-yellow-300 h-10 w-1/2 px-3 py-2 rounded-2xl cursor-pointer"

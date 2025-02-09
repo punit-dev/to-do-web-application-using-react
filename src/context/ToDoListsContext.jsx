@@ -56,6 +56,13 @@ export const ToDoProvider = ({ children }) => {
       )
     );
   };
+  const editTodo = (id, title, desc) => {
+    setLists((prevLists) =>
+      prevLists.map((todo) =>
+        todo.id === id ? { ...todo, title, desc } : todo
+      )
+    );
+  };
 
   const deleteTodo = (idx) => {
     const copyLists = [...lists];
@@ -65,7 +72,7 @@ export const ToDoProvider = ({ children }) => {
 
   return (
     <ToDoListsContext.Provider
-      value={{ addList, lists, markAsDone, deleteTodo, keyCode }}
+      value={{ addList, lists, markAsDone, deleteTodo, keyCode, editTodo }}
     >
       {children}
     </ToDoListsContext.Provider>

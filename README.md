@@ -1,6 +1,6 @@
 # React + Vite To-Do Application
 
-This project is a simple To-Do application built using React and Vite. You can add, mark as done, and delete to-do items.
+This project is a simple To-Do application built using React and Vite. You can add, edit, mark as done, and delete to-do items.
 
 ## Getting Started
 
@@ -49,6 +49,7 @@ Open your browser and go to `http://localhost:5173`.
 ### Key Features
 
 - **Add To-Do**: Add new to-do items.
+- **Edit To-Do**: Edit existing to-do items.
 - **Mark as Done**: Mark to-do items as done or undo them.
 - **Delete To-Do**: Delete to-do items with a confirmation prompt.
 

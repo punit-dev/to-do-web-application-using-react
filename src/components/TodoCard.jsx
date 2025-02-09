@@ -1,5 +1,7 @@
 import { motion } from "motion/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 
 const TodoCard = ({
   title,
@@ -7,24 +9,64 @@ const TodoCard = ({
   isDone,
   id,
   markAsDone,
-  isDelete,
   setIsDelete,
   setIdx,
   idx,
+  setIsEdit,
 }) => {
+  const [isInView, setIsInView] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(document.getElementById(`todo-card-${id}`));
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [id]);
+
+  if (!isInView) {
+    return (
+      <div
+        id={`todo-card-${id}`}
+        className="h-65 w-55 bg-black rounded-2xl mt-3"
+      ></div>
+    );
+  }
+
   return (
     <motion.div
+      id={`todo-card-${id}`}
       initial={{ scale: 0 }}
       animate={{
         scale: 1,
       }}
-      className="h-65 w-55 bg-black rounded-2xl mt-3 flex items-center flex-col overflow-hidden justify-between cursor-default"
+      className="h-65 w-55 bg-black rounded-2xl mt-3 flex items-center flex-col overflow-hidden justify-between cursor-default relative"
       style={{
         backgroundColor: isDone ? "#05bd82" : "black",
         color: isDone ? "black" : "white",
       }}
     >
-      <h1 className="text-xl font-semibold mt-2 text-center">{title}</h1>
+      <motion.div
+        whileTap={{ scale: 0.9 }}
+        className="absolute right-2 top-0.5 opacity-50 text-md cursor-pointer"
+        onClick={() => {
+          setIdx(idx);
+          setIsEdit((prev) => !prev);
+        }}
+      >
+        <FontAwesomeIcon icon={faPenToSquare} />
+      </motion.div>
+      <h1 className="text-xl font-semibold mt-4 text-center">{title}</h1>
       <div className="p-2">
         <p>{desc}</p>
       </div>
@@ -38,7 +80,7 @@ const TodoCard = ({
           }}
           className="w-1/3 h-1/2 px-3 bg-red-400 rounded-2xl cursor-pointer"
           onClick={() => {
-            setIsDelete(!isDelete);
+            setIsDelete((prev) => !prev);
             setIdx(idx);
           }}
         >
@@ -63,4 +105,4 @@ const TodoCard = ({
   );
 };
 
-export default TodoCard;
+export default React.memo(TodoCard);
