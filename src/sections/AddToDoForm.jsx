@@ -8,6 +8,28 @@ const AddToDoForm = ({ isAddToDo, setIsAddToDo }) => {
   const { addList, keyCode } = useContext(ToDoListsContext);
   const [border, setBorder] = useState("#000");
   const [textCount, setTextCount] = useState(85);
+  const [selectedTextCount, setSelectedTextCount] = useState(1);
+
+  const textHandel = () => {
+    const selection = window.getSelection();
+    const selectedString = selection.toString();
+    if (selectedString.length >= 1) {
+      setSelectedTextCount(selectedString.length);
+    }
+  };
+
+  const handleKeyDown = (key) => {
+    if (key.code === "Backspace" || key.code === "Delete") {
+      if (textCount < 85) {
+        setTextCount(textCount + selectedTextCount);
+        setSelectedTextCount(1);
+      }
+    } else if (keyCode.includes(key.code)) {
+      if (textCount > 0) {
+        setTextCount(textCount - 1);
+      }
+    }
+  };
 
   const formEvent = (e) => {
     e.preventDefault();
@@ -16,37 +38,28 @@ const AddToDoForm = ({ isAddToDo, setIsAddToDo }) => {
       setTitle("");
       setDesc("");
     } else {
-      console.log("please feel all filed");
+      alert("Please fill in all fields.");
       setBorder("#ff0000");
     }
   };
+
   return (
     <motion.div
       className="absolute h-screen flex justify-center items-center w-1/2 backdrop-blur-md z-10"
-      initial={{
-        translateX: "175vh",
-      }}
-      animate={{
-        translateX: isAddToDo ? "70vh" : "175vh",
-      }}
-      transition={{
-        delay: 0.4,
-      }}
+      initial={{ translateX: "175vh" }}
+      animate={{ translateX: isAddToDo ? "70vh" : "175vh" }}
+      transition={{ delay: 0.4 }}
     >
       <motion.div
         whileTap={{ scaleX: 0.9, scaleY: 1.2 }}
-        onClick={() => {
-          setIsAddToDo((prev) => !prev);
-        }}
+        onClick={() => setIsAddToDo((prev) => !prev)}
         className="absolute text-white top-3 left-3 px-4 cursor-pointer border-2 border-white rounded-xl"
       >
         <h1 className="text-xl">Back</h1>
       </motion.div>
       <form
         className="flex flex-col gap-5 z-10 backdrop-blur-2xl bg-white/20 h-1/2 w-65 rounded-2xl px-4 py-5 justify-center items-center"
-        onSubmit={(e) => {
-          formEvent(e);
-        }}
+        onSubmit={formEvent}
       >
         <h1 className="text-white text-2xl">Add a New ToDo</h1>
         <input
@@ -70,22 +83,8 @@ const AddToDoForm = ({ isAddToDo, setIsAddToDo }) => {
               setDesc(e.target.value);
               setBorder("#000");
             }}
-            onKeyDown={(key) => {
-              if (key.code == "Backspace" || key.code == "Delete") {
-                if (textCount < 85) {
-                  setTextCount(textCount + 1);
-                }
-              }
-            }}
-            onSelect={(e) => {
-              if (e.currentTarget.value == 0) {
-                setTextCount(85);
-              } else if (keyCode.includes(e.nativeEvent.code)) {
-                if (textCount > 0) {
-                  setTextCount(textCount - 1);
-                }
-              }
-            }}
+            onKeyDown={handleKeyDown}
+            onSelect={textHandel}
             value={desc}
             cols={10}
             placeholder="Enter ToDo Description"
